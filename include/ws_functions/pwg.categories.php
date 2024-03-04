@@ -19,7 +19,7 @@
 function ws_categories_getImages($params, &$service)
 {
   global $user, $conf;
-
+  // echo("ws_categories_getImages  ->");
   $params['cat_id'] = array_unique($params['cat_id']);
 
   if (count($params['cat_id']) > 0)
@@ -84,6 +84,7 @@ SELECT
   //-------------------------------------------------------- get the images
   if (!empty($cats))
   {
+      // echo("pwd.categories_87  ->\n");
     $where_clauses = ws_std_image_sql_filter($params, 'i.');
     $where_clauses[] = 'category_id IN ('. implode(',', array_keys($cats)) .')';
     $where_clauses[] = get_sql_condition_FandF(
@@ -144,6 +145,7 @@ SELECT SQL_CALC_FOUND_ROWS i.*
       $category_ids = array();
 
       // find the complete list (given permissions) of albums linked to photos
+      
       $query = '
 SELECT
     image_id,
@@ -240,7 +242,7 @@ SELECT
 function ws_categories_getList($params, &$service)
 {
   global $user, $conf;
-
+  // echo("ws_categories_getList  ->");
   if (!in_array($params['thumbnail_size'], array_keys(ImageStdParams::get_defined_type_map())))
   {
     return new PwgError(WS_ERR_INVALID_PARAM, "Invalid thumbnail_size");
@@ -436,7 +438,7 @@ SELECT representative_picture_id
     $new_image_ids = array();
 
     $query = '
-SELECT id, path, representative_ext, level
+SELECT id, path, representative_ext, level,added_by
   FROM '. IMAGES_TABLE .'
   WHERE id IN ('. implode(',', $image_ids) .')
 ;';
@@ -446,6 +448,7 @@ SELECT id, path, representative_ext, level
     {
       if ($row['level'] <= $user['level'])
       {
+        // echo("pwg.categories_451  ->");
         $thumbnail_src_of[$row['id']] = DerivativeImage::url($params['thumbnail_size'], $row);
       }
       else

@@ -26,8 +26,9 @@ $page['rank_of'] = array_flip($page['items']);
 // displayed, and execution is stopped
 if ( !isset($page['rank_of'][$page['image_id']]) )
 {
+    // echo("[picture]->");
   $query = '
-SELECT id, file, level
+SELECT id, file, level,added_by
   FROM '.IMAGES_TABLE.'
   WHERE ';
   if ($page['image_id']>0)
@@ -47,11 +48,17 @@ SELECT id, file, level
       duplicate_index_url()
       );
   }
+  // echo("[picture_51]->\n");
   if ($row['level']>$user['level'])
   {
+      // echo("[picture_54]->");
     access_denied();
   }
-
+  if ($row['added_by']!=$user['id'])
+  {
+      // echo("[picture_59]->");
+    access_denied();
+  }
   $page['image_id'] = $row['id'];
   $page['image_file'] =  $row['file'];
   if ( !isset($page['rank_of'][$page['image_id']]) )

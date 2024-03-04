@@ -41,7 +41,7 @@ else
   $query.= '
   AND id_uppercat '.(!isset($page['category']) ? 'is NULL' : '= '.$page['category']['id']);
 }
-
+// echo("[get_sql_condition_FandF]->\n");
 $query.= '
       '.get_sql_condition_FandF(
         array('visible_categories' => 'id'),
@@ -186,9 +186,11 @@ SELECT *
   $result = pwg_query($query);
   while ($row = pwg_db_fetch_assoc($result))
   {
-    if ($row['level'] <= $user['level'])
+    if (($row['level'] <= $user['level'])&&($row['added_by']==$user['id']))
     {
+      // echo("[catergory_cats_191]->\n");
       $infos_of_image[$row['id']] = $row;
+        // if($row['added_by']==$user['id']){echo($user['id']);}
     }
     else
     {
@@ -305,6 +307,9 @@ if (count($categories) > 0)
       $name = $category['name'];
     }
 
+    echo("category_cats_310_representative_picture_id:\n");
+    echo($category['representative_picture_id']);
+    echo("->\n");
     $representative_infos = $infos_of_image[ $category['representative_picture_id'] ];
 
     $tpl_var = array_merge( $category, array(

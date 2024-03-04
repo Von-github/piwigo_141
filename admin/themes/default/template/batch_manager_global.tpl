@@ -604,7 +604,9 @@ UL.thumbnails SPAN.wrap2 {ldelim}
             <a href="{$thumbnail.FILE_SRC}" class="preview-box icon-zoom-square" title="{'Zoom'|@translate}"></a>
           </div>
 						{if $thumbnail.level > 0}
-						<em class="levelIndicatorF" title="{'Who can see these photos?'|@translate} : ">{'Level %d'|@sprintf:$thumbnail.level|@translate}</em>
+						<em class="levelIndicatorF" title="{'Who can see these photos?'|@translate} : "><select data-selectize="users" data-value="{$users_selected|@json_encode|escape:html}"
+      placeholder="{'Type in a search term'|translate}"
+      name="users[]" multiple style="width:600px;"></select></em>
 						{/if}
 						<img src="{$thumbnail.thumb->get_url()}" alt="{$thumbnail.file}" title="{$thumbnail.TITLE|@escape:'html'}" {$thumbnail.thumb->get_size_htm()}>
 					</span>

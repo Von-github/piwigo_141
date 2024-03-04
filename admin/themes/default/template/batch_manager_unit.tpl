@@ -89,6 +89,9 @@ jQuery("a.preview-box").colorbox( {
         <select name="level-{$element.id}">
           {html_options options=$level_options selected=$element.LEVEL}
         </select>
+        <select data-selectize="users" data-value="{$users_selected|@json_encode|escape:html}"
+            placeholder="{'Type in a search term'|translate}"
+            name="users[]" multiple style="width:600px;"></select>
       </td>
     </tr>
 
