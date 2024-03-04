@@ -1709,8 +1709,8 @@ function split_allwords($raw_allwords)
 
   if (!preg_match('/^\s*$/', $raw_allwords))
   {
-    $drop_char_match   = array('-','^','$',';','#','&','(',')','<','>','`','\'','"','|',',','@','_','?','%','~','.','[',']','{','}',':','\\','/','=','\'','!','*');
-    $drop_char_replace = array(' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','', '',  ' ',' ',' ',' ','', ' ',' ',' ',' ',' ',' ',' ',' ',' ','' , ' ',' ',' ', ' ',' ');
+    $drop_char_match   = array('^','$',';','#','&','(',')','<','>','`','\'','"','|',',','@','?','%','~','.','[',']','{','}',':','\\','/','=','\'','!','*');
+    $drop_char_replace = array(' ',' ',' ',' ',' ',' ',' ',' ',' ','', '',  ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','' , ' ',' ',' ', ' ',' ');
 
     // Split words
     $words = array_unique(
@@ -1766,6 +1766,11 @@ function save_search($rules, $forked_from=null)
       'forked_from' => $forked_from,
     )
   );
+
+  if (!is_a_guest() and !is_generic())
+  {
+    userprefs_update_param('gallery_search_filters', array_keys($rules['fields'] ?? array()));
+  }
 
   $url = make_index_url(
     array(

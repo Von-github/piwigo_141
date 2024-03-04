@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <img src="https://piwigo.org/plugins/piwigo-piwigodotorg/images/piwigo.org.svg" width="200" alt="Piwigo logo">
 
 Manage your photo library. Piwigo is open source photo gallery software for the web. Designed for organisations, teams and individuals.
@@ -41,6 +40,3 @@ Piwigo is widely driven by its community; if you want to improve the code, fork 
 ## License
 
 Piwigo is released under the GPL v2 license. See our [Copying details](https://github.com/Piwigo/Piwigo/blob/master/COPYING.txt).
-=======
-# piwigo_141
->>>>>>> 3a4333259b7d9b514b4a1d3cf99eff4d97f96597
