@@ -14,7 +14,7 @@ include(PHPWG_ROOT_PATH.'include/section_init.inc.php');
 // Check Access and exit when user status is not ok
 check_status(ACCESS_GUEST);
 
-
+// echo("[index_php]->");
 // access authorization check
 if (isset($page['category']))
 {
@@ -111,7 +111,7 @@ if ( empty($page['is_external']) )
 {
   //----------------------------------------------------- template initialization
   $page['body_id'] = 'theCategoryPage';
-
+  // echo("[index_114]->");
   if (isset($page['flat']) or isset($page['chronology_field']))
   {
     $template->assign(
@@ -235,6 +235,7 @@ if ( empty($page['is_external']) )
 
     if (isset($my_search['fields']['author']))
     {
+        // echo("my_search->");
       $query = '
 SELECT
     author,
@@ -663,11 +664,15 @@ SELECT
     and (!isset($page['category']['count_categories']) or $page['category']['count_categories']>0 )
   )
   {
+    // echo("[include/category_cats.inc.php]->");
+
     include(PHPWG_ROOT_PATH.'include/category_cats.inc.php');
   }
 
   if ( !empty($page['items']) )
   {
+    // echo("[include/category_default.inc.php]->");
+
     include(PHPWG_ROOT_PATH.'include/category_default.inc.php');
 
     if ($conf['index_sizes_icon'])
@@ -681,7 +686,8 @@ SELECT
       $template->clear_assign( 'derivative_params' );
       $type_map = ImageStdParams::get_defined_type_map();
       unset($type_map[IMG_XXLARGE], $type_map[IMG_XLARGE]);
-
+      // echo("index_689 ->\n");
+      // exit();
       foreach($type_map as $params)
       {
         $template->append(

@@ -26,7 +26,7 @@
 //   'start'    => 24
 //   );
 
-
+// echo("section_init ->\n");
 $page['items'] = array();
 $page['start'] = $page['startcat'] = 0;
 
@@ -196,7 +196,7 @@ if (pwg_get_session_var('image_order',0) > 0)
     $page['super_order_by'] = false;
   }
 }
-
+// echo("debug_first ->\n");
 $forbidden = get_sql_condition_FandF(
       array(
         'forbidden_categories' => 'category_id',
@@ -205,12 +205,15 @@ $forbidden = get_sql_condition_FandF(
         ),
       'AND'
   );
-
+// echo("section_init.inc_208_forbidden:\n");
+// echo($forbidden);
+// echo(" ->\n");
 // +-----------------------------------------------------------------------+
 // |                              category                                 |
 // +-----------------------------------------------------------------------+
 if ('categories' == $page['section'])
 {
+  // echo("sect_init_214 ->\n");
   if (isset($page['combined_categories']))
   {
     $page['title'] = get_combined_categories_content_title();
@@ -235,8 +238,12 @@ if ('categories' == $page['section'])
   }
 
   // GET IMAGES LIST
+  // echo("section_init_239_tile:[\n");
+  // echo($page['title']);
+  // echo("] ->\n");
   if (isset($page['combined_categories']))
   {
+    // echo("sect_init_if ->\n");
     $cat_ids = array($page['category']['id']);
     foreach ($page['combined_categories'] as $category)
     {
@@ -255,6 +262,8 @@ if ('categories' == $page['section'])
       )
     )
   {
+    // echo("sect_init_elif ->\n");
+    
     if ( !empty($page['category']['image_order']) and !isset($page['super_order_by']) )
     {
       $conf[ 'order_by' ] = ' ORDER BY '.$page['category']['image_order'];
@@ -287,9 +296,11 @@ SELECT id
               array( 'visible_images' => 'id' ),
               'AND'
           );
+          
       }
       else
       {
+        
         $cache_key = $persistent_cache->make_key('all_iids'.$user['id'].$user['cache_update_time'].$conf['order_by']);
         unset($page['is_homepage']);
         $where_sql = '1=1';
@@ -298,6 +309,7 @@ SELECT id
     // normal mode
     else
     {
+      
       $where_sql = 'category_id = '.$page['category']['id'];
     }
 
@@ -313,9 +325,16 @@ SELECT DISTINCT(image_id)
 '.$forbidden.'
   '.$conf['order_by'].'
 ;';
-
+// echo("section_init_325_forbidden:[");   
+// echo($forbidden);
+// echo("] -> ");
+// echo("section_init_326_query:[");   
+// echo($query);
+// echo("] ->\n");
       $page['items'] = query2array($query,null, 'image_id');
-      
+      // echo(implode(',',$page['items']));
+      // echo(" ->\n");
+
       if ( isset($cache_key) )
         $persistent_cache->set($cache_key, $page['items']);
     }

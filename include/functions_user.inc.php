@@ -327,6 +327,7 @@ function build_user($user_id, $use_cache=true)
  */
 function getuserdata($user_id, $use_cache=false)
 {
+  // echo("get_user_data->\n");
   global $conf;
 
   // retrieve basic user data
@@ -407,6 +408,7 @@ SELECT
 
   if ($use_cache)
   {
+    // echo("user_cache->\n");
     if (!isset($userdata['need_update'])
         or !is_bool($userdata['need_update'])
         or $userdata['need_update'] == true)
@@ -425,9 +427,13 @@ SELECT
 SELECT DISTINCT(id)
   FROM '.IMAGES_TABLE.' INNER JOIN '.IMAGE_CATEGORY_TABLE.' ON id=image_id
   WHERE category_id NOT IN ('.$userdata['forbidden_categories'].')
-    AND level>'.$userdata['level'];
+    AND (level>'.$userdata['level'].'
+    OR added_by != '.$userdata['id'].')';
+    // echo("debug_level->\n");
       $forbidden_ids = query2array($query,null, 'id');
-
+      // echo("[function_user.inc_434_forbidden_ids]:");
+      // echo(implode(',',$forbidden_ids));
+      // echo("->\n");
       if ( empty($forbidden_ids) )
       {
         $forbidden_ids[] = 0;
@@ -1463,8 +1469,8 @@ function get_sql_condition_FandF(
   $force_one_condition = false
   )
 {
+  // echo("#get_sql_condition_FandF:");
   global $user, $filter;
-
   $sql_list = array();
 
   foreach ($condition_fields as $condition => $field_name)
@@ -1473,6 +1479,7 @@ function get_sql_condition_FandF(
     {
       case 'forbidden_categories':
       {
+        // echo("case-forbidden_categories->\n");
         if (!empty($user['forbidden_categories']))
         {
           $sql_list[] =
@@ -1482,6 +1489,7 @@ function get_sql_condition_FandF(
       }
       case 'visible_categories':
       {
+        // echo("case-visible_categories->\n");
         if (!empty($filter['visible_categories']))
         {
           $sql_list[] =
@@ -1490,18 +1498,28 @@ function get_sql_condition_FandF(
         break;
       }
       case 'visible_images':
+        // echo("case-visible_images->\n");
         if (!empty($filter['visible_images']))
         {
+            // echo("!empty-filter-visible_images ->\n");
           $sql_list[] =
             $field_name.' IN ('.$filter['visible_images'].')';
         }
         // note there is no break - visible include forbidden
       case 'forbidden_images':
+          // echo("image_access_list:");
+          // echo($user['image_access_list']);
+          // echo("->\n");
+          // echo("image_access_type:");
+          // echo($user['image_access_type']);
+          // echo("->\n");
         if (
             !empty($user['image_access_list'])
             or $user['image_access_type']!='NOT IN'
             )
         {
+
+            // echo("case-forbidden_images ->\n");
           $table_prefix=null;
           if ($field_name=='id')
           {
@@ -1514,6 +1532,8 @@ function get_sql_condition_FandF(
           if ( isset($table_prefix) )
           {
             $sql_list[]=$table_prefix.'level<='.$user['level'];
+            $sql_list[] =$table_prefix . 'added_by=' . $user['id'];
+            // echo($sql_list);
           }
           elseif ( !empty($user['image_access_list']) and !empty($user['image_access_type']) )
           {

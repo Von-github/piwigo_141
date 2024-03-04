@@ -484,7 +484,8 @@ FROM '.CATEGORIES_TABLE.' as c
   LEFT JOIN '.IMAGE_CATEGORY_TABLE.' AS ic ON ic.category_id = c.id
   LEFT JOIN '.IMAGES_TABLE.' AS i
     ON ic.image_id = i.id
-      AND i.level<='.$userdata['level'];
+      AND i.level<='.$userdata['level'].'
+      AND i.added_by = '.$userdata['id'];
 
   if ( isset($filter_days) )
   {

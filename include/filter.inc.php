@@ -103,6 +103,7 @@ WHERE ';
     // Read only data
     $filter['categories'] = unserialize(pwg_get_session_var('filter_categories', serialize(array())));
     $filter['visible_categories'] = pwg_get_session_var('filter_visible_categories', '');
+    // echo("[filter.inc_106]->\n");
     $filter['visible_images'] = pwg_get_session_var('filter_visible_images', '');
   }
   unset($filter_key);

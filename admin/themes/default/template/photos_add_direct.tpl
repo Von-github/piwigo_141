@@ -498,7 +498,9 @@ jQuery(document).ready(function(){
 
     <fieldset id="permissions" style="display:none">
       <legend>{'Who can see these photos?'|@translate}</legend>
-
+      <select data-selectize="users" data-value="{$users_selected|@json_encode|escape:html}"
+        placeholder="{'Type in a search term'|translate}"
+        name="users[]" multiple style="width:600px;"></select>
       <select name="level" size="1">
         {html_options options=$level_options selected=$level_options_selected}
       </select>
